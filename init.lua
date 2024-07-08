@@ -8,5 +8,5 @@ vim.cmd("set number")
 
 require("config.lazy")
 require("lazy").setup("plugins")
-
+require("config.keybinding")
 -- setting clangformat gnu
