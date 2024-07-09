@@ -1,15 +1,19 @@
 return {
 	{
 		"williamboman/mason.nvim",
+		opts = {
+			ensure_installed = { "codelldb"}
+		},
 		config = function()
 			require("mason").setup()
+
 		end,
 	},
 	{
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "clangd", "tsserver" },
+				ensure_installed = { "lua_ls", "clangd", "tsserver"},
 			})
 		end,
 	},
