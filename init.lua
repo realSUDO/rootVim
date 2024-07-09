@@ -10,3 +10,5 @@ require("config.lazy")
 require("lazy").setup("plugins")
 require("config.keybinding")
 -- setting clangformat gnu
+require("config.compileandrun")
+require("config.myterminal")
