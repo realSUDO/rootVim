@@ -45,8 +45,11 @@ function CompileAndRun()
             vim.cmd("belowright 13split | terminal " .. output)  -- Open a split terminal and run the output file
         else
             vim.api.nvim_echo({ { "Compilation failed!", "ErrorMsg" } }, false, {})
-        end
+		end
     elseif vim.bo.filetype == "javascript" or vim.bo.filetype == "typescript" then
-        vim.cmd("belowright 13split | terminal node %")
-    end
+ 		vim.cmd("belowright 13split | terminal node %")
+	elseif vim.bo.filetype == "html" then
+	vim.cmd("w") --i mean yeah... we're just saving it 
+	vim.cmd("belowright 13split | terminal live-server ")
+	end
 end
