@@ -2,7 +2,7 @@ return {
 	{
 		"williamboman/mason.nvim",
 		opts = {
-			ensure_installed = { "codelldb"}
+			ensure_installed = { "codelldb","black","isort"}
 		},
 		config = function()
 			require("mason").setup()
@@ -13,7 +13,7 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "clangd","ts_ls"},
+				ensure_installed = { "lua_ls", "clangd","ts_ls","pyright"},
 			})
 		end,
 	},
@@ -29,6 +29,9 @@ return {
 				capabilities = capabilities,
 			})
 			lspconfig.ts_ls.setup({
+				capabilities = capabilities,
+			})
+			lspconfig.pyright.setup({
 				capabilities = capabilities,
 			})
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, {})

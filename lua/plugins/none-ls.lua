@@ -8,14 +8,10 @@ return {
 				null_ls.builtins.formatting.prettier,
 				null_ls.builtins.formatting.clang_format.with({
 					extra_args = { "--style=file" }, --add .clang-format file in your home directory with your custom stylings or simply replace --style=file with --style=GNU
-					-- my custom style is
-
-					-- BasedOnStyle: LLVM
-					-- IndentWidth: 4
-					-- UseTab: Always
-					-- BreakBeforeBraces: Allman
-					-- AllowShortFunctionsOnASingleLine: InlineOnly
 				}),
+				null_ls.builtins.formatting.black,
+				null_ls.builtins.formatting.isort,
+
 			},
 		})
 		vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, {})
