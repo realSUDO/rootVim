@@ -26,7 +26,10 @@ function CompileAndRun()
 		return compiled_files_dir
 	end
 
-	local compiled_files_dir = ensure_compiled_files_dir()
+	local compiled_files_dir = nil
+	if vim.bo.filetype == "c" or vim.bo.filetype == "cpp" then
+		compiled_files_dir = ensure_compiled_files_dir()
+	end
 
 	if vim.bo.filetype == "c" then
 		local output = compiled_files_dir .. "/" .. vim.fn.expand("%:t:r")
