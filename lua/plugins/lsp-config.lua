@@ -2,18 +2,17 @@ return {
 	{
 		"williamboman/mason.nvim",
 		opts = {
-			ensure_installed = { "codelldb","black","isort"}
+			ensure_installed = { "codelldb", "black", "isort" },
 		},
 		config = function()
 			require("mason").setup()
-
 		end,
 	},
 	{
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "clangd","ts_ls","pyright"},
+				ensure_installed = { "lua_ls", "clangd", "ts_ls", "pyright" },
 			})
 		end,
 	},
@@ -33,6 +32,13 @@ return {
 			})
 			lspconfig.pyright.setup({
 				capabilities = capabilities,
+
+				-- setting pyright to use custom installed python3.8 (AUR python38) 
+				settings = {
+					python = {
+						pythonPath = "/usr/bin/python3.8",
+					},
+				},
 			})
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
