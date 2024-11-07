@@ -32,11 +32,10 @@ return {
 			})
 			lspconfig.pyright.setup({
 				capabilities = capabilities,
-
-				-- setting pyright to use custom installed python3.8 (AUR python38) 
+				-- setting pyright to use correct python envrionment
 				settings = {
 					python = {
-						pythonPath = "/usr/bin/python3.8",
+						pythonPath = "/home/just_multiply/.globalPython/bin/python",
 					},
 				},
 			})
