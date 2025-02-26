@@ -30,6 +30,9 @@ return {
 			lspconfig.ts_ls.setup({
 				capabilities = capabilities,
 			})
+			lspconfig.bashls.setup({
+				capabilities = capabilities,
+			})
 			lspconfig.pyright.setup({
 				capabilities = capabilities,
 				-- setting pyright to use correct python envrionment

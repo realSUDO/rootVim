@@ -78,6 +78,9 @@ function CompileAndRun()
 	elseif vim.bo.filetype == "python" or vim.bo.filetype == "py" then
 		-- For Python, open a split terminal and run the file with Python interpreter
 		vim.cmd("belowright 13split | terminal" .. pythonPath .. " %")
+	elseif vim.bo.filetype == "bash" or vim.bo.filetype == "sh" then
+		-- For Bash , open a split terminal and run the file with bash interpreter
+		vim.cmd("belowright 13split | terminal bash %" )
 	elseif vim.bo.filetype == "html" then
 		vim.cmd("w") -- Save the HTML file
 		-- Open a split terminal and serve the HTML file with live-server
