@@ -3,22 +3,23 @@ return {
 		"hrsh7th/cmp-nvim-lsp",
 	},
 	{
-		"L3MON4D3/LuaSnip",
+		"SirVer/ultisnips",
 		dependencies = {
-			"saadparwaiz1/cmp_luasnip",
-			"rafamadriz/friendly-snippets",
+			"quangnguyen30192/cmp-nvim-ultisnips",
 		},
+		config = function()
+			vim.g.python3_host_prog = "/home/just_multiply/.globalPython/bin/python3"
+		end,
 	},
 	{
 		"hrsh7th/nvim-cmp",
 		config = function()
 			local cmp = require("cmp")
-			require("luasnip.loaders.from_vscode").lazy_load()
 
 			cmp.setup({
 				snippet = {
 					expand = function(args)
-						require("luasnip").lsp_expand(args.body)
+						vim.fn["UltiSnips#Anon"](args.body)
 					end,
 				},
 				window = {
@@ -34,7 +35,7 @@ return {
 				}),
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" },
-					{ name = "luasnip" }, -- For luasnip users.
+					{ name = "ultisnips" },
 				}, {
 					{ name = "buffer" },
 				}),
