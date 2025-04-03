@@ -7,7 +7,7 @@ return {
 		local random_line = lines[math.random(#lines)] -- pick a random line in random_line
 
 		require("presence").setup({
-			workspace_text = "Architecting Chaos in Neovim",
+			workspace_text = "Architecting Chaos",
 			editing_text = random_line,
 			file_explorer_text = "Lost in the filesystem...",
 			git_commit_text = "Sealing the fate of this repo!",
