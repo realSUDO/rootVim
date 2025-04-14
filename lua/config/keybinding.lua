@@ -26,3 +26,6 @@ map("n", "<leader>tt", ':lua OpenClearTerminal("horizontal")<CR>')
 
 --open terminal vertical
 map("n", "<leader>ty", ':lua OpenClearTerminal("vertical")<CR>')
+
+--telescope : find file	
+map("n","<C-p>","<cmd>lua require('telescope.builtin').find_files()<CR>")
