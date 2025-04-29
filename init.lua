@@ -20,3 +20,5 @@ require("config.snippets")
 --for comments
 require("config.comments")
 require("config.clipboard")
+require("config.toggleCopilot")
+require("config.flashYanked")

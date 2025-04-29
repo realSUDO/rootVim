@@ -1,3 +1,7 @@
+local toggleCopilot = require "config.toggleCopilot"
+--define a function to toggle copilot
+
+
 --define a helper function to set keymapping..
 local function map(mode, lhs, rhs, opts)
 	--set defualt options
@@ -29,3 +33,7 @@ map("n", "<leader>ty", ':lua OpenClearTerminal("vertical")<CR>')
 
 --telescope : find file	
 map("n","<C-p>","<cmd>lua require('telescope.builtin').find_files()<CR>")
+
+map("n", "<leader><leader>co" , ":lua ToggleCopilot()<CR>")
+
+vim.keymap.set("n","<leader><leader>co", toggleCopilot.ToggleCopilot, {noremap = true , silent = true , desc = "Toggle Copilot"})
