@@ -3,6 +3,9 @@ return {
 		"hrsh7th/cmp-nvim-lsp",
 	},
 	{
+		"github/copilot.vim"
+	},
+	{
 		"SirVer/ultisnips",
 		dependencies = {
 			"quangnguyen30192/cmp-nvim-ultisnips",
