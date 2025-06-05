@@ -37,7 +37,7 @@ A lean, modular, high-performance Neovim configuration tailored for Linux + Tili
 
 | UI Preview | Telescope | Zeroscreen (Alpha.nvim) |
 |------------|-----------|--------------------------|
-| ![UI](./media/ui.png) | ![Telescope](./media/telescope.png) | ![Alpha](./media/alpha.png) |
+| ![UI](./media/ui.png) | ![Telescope](./media/telescope.png) | ![Alpha](./media/zero.png) |
 
 > 🖼️ Home screen powered by [alpha-nvim](https://github.com/goolord/alpha-nvim)
 
