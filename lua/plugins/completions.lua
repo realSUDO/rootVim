@@ -3,7 +3,7 @@ return {
 		"hrsh7th/cmp-nvim-lsp",
 	},
 	{
-		"github/copilot.vim"
+		"github/copilot.vim",
 	},
 	{
 		"SirVer/ultisnips",
@@ -11,7 +11,12 @@ return {
 			"quangnguyen30192/cmp-nvim-ultisnips",
 		},
 		config = function()
-			vim.g.python3_host_prog = "/home/just_multiply/.globalPython/bin/python3"
+			local global_py = os.getenv("HOME") .. "/.globalPython/bin/python3"
+			if vim.fn.filereadable(global_py) == 1 then
+				vim.g.python3_host_prog = global_py
+			elseif vim.fn.executable("python3") == 1 then
+				vim.g.python3_host_prog = vim.fn.exepath("python3")
+			end
 		end,
 	},
 	{
