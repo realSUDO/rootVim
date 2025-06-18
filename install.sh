@@ -1,240 +1,376 @@
 #!/usr/bin/env bash
 
 # Author: justmultiply
-# Cosmic Edition: Quirky, Roasty & Ruthless
+# Cosmic Edition: Now with Premium Visual Flair ✨
 
-set -eo pipefail
+# Clear terminal only once at start
+clear
 
-# Colors
+# ==== TERMINAL ART ====
+cat << "EOF"
+ ███▄    █ ▓█████  ▒█████   ██▒   █▓ ██▓ ███▄ ▄███▓
+ ██ ▀█   █ ▓█   ▀ ▒██▒  ██▒▓██░   █▒▓██▒▓██▒▀█▀ ██▒
+▓██  ▀█ ██▒▒███   ▒██░  ██▒ ▓██  █▒░▒██▒▓██    ▓██░
+▓██▒  ▐▌██▒▒▓█  ▄ ▒██   ██░  ▒██ █░░░██░▒██    ▒██ 
+▒██░   ▓██░░▒████▒░ ████▓▒░   ▒▀█░  ░██░▒██▒   ░██▒
+░ ▒░   ▒ ▒ ░░ ▒░ ░░ ▒░▒░▒░    ░ ▐░  ░▓  ░ ▒░   ░  ░
+░ ░░   ░ ▒░ ░ ░  ░  ░ ▒ ▒░    ░ ░░   ▒ ░░  ░      ░
+   ░   ░ ░    ░   ░ ░ ░ ▒       ░░   ▒ ░░      ░   
+         ░    ░  ░    ░ ░        ░   ░         ░   
+                                ░                  
+EOF
+
+# ==== COLOR PALETTE ====
 BOLD=$(tput bold)
-GREEN=$(tput setaf 2)
-YELLOW=$(tput setaf 3)
-RED=$(tput setaf 1)
-BLUE=$(tput setaf 4)
-MAGENTA=$(tput setaf 5)
-CYAN=$(tput setaf 6)
+GREEN=$(tput setaf 46)       # Bright green
+YELLOW=$(tput setaf 226)     # Bright yellow
+RED=$(tput setaf 196)        # Bright red
+BLUE=$(tput setaf 39)        # Bright blue
+CYAN=$(tput setaf 51)        # Bright cyan
+NEON_WHITE=$(tput setaf 255) # Pure white
+GRAY=$(tput setaf 245)       # Light gray
 NC=$(tput sgr0)
 
-SPINNER=("⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏")
-DIVIDER="$(printf '%*s' "$(tput cols)" '' | tr ' ' '═')"
-SMALL_DIVIDER="$(printf '%*s' "$(( $(tput cols) / 2 ))" '' | tr ' ' '─')"
+# Animations
+SPINNER=("🌒 " "🌓 " "🌔 " "🌕 " "🌖 " "🌗 " "🌘 " "🌑 ")
+DIVIDER="$(printf '.%.0s' $(seq 1 $(tput cols)))"
+SMALL_DIVIDER="$(printf ' %.0s' $(seq 1 $(( $(tput cols) / 3 ))))"
 
-CHEESY=(
-    "Installing faster than your ex moved on 🚩"
-    "Turning your boring terminal into a space rave 💃"
-    "Code so clean even your mom won't nag 🔥"
-    "If Batman used Neovim, this would be it 🦇"
-    "Running smoother than that guy who ghosted you 😎"
+# Fun messages
+QUIPS=(
+    "Initializing premium Neovim experience ✨"
+    "Your editor is about to transcend reality 🚀"
+    "Loading elite coding environment... 💎"
+    "Preparing to make IDEs jealous 😎"
+    "This setup is so clean, it sparkles ✨"
+    "Optimizing at the speed of light ⚡"
+    "Turning your terminal into a work of art 🎨"
+    "Code so clean it should be in a museum 🏛️"
+    "The editor experience you deserve 🦄"
+    "Smoother than a fresh macOS install 🍏"
 )
 
-NO_VARIANTS=(
+REJECTS=(
     "Nah, not feeling it."
     "Negative, captain."
-    "Hell no 🚫"
+    "Hard pass 🚫"
     "Abort mission."
-    "Declined like your last crush's DM 💔"
+    "Declined with extreme prejudice 💔"
+    "Bruh... no. 😒"
+    "Your loss, legend. 🏆"
+    "Skipping like a stone on water 🌊"
+    "Rejected like a bad PR 👎"
+    "Aight, peace out ✌️"
 )
 
-# Spinner animation
+# ==== FUNCTIONS ====
+random_quip() {
+    echo "${NEON_WHITE}${BOLD}${QUIPS[$((RANDOM % ${#QUIPS[@]}))]}${NC}"
+}
+
+random_reject() {
+    echo "${YELLOW}${BOLD}${REJECTS[$((RANDOM % ${#REJECTS[@]}))]}${NC}"
+}
+
 spinner() {
     local pid=$!
     local i=0
     while kill -0 $pid 2>/dev/null; do
-        i=$(( (i+1) % 10 ))
-        printf "\r${SPINNER[$i]} ${1}..."
+        i=$(( (i+1) % 8 ))
+        printf "\r${SPINNER[$i]} ${NEON_WHITE}${1}...${NC}"
         sleep 0.1
     done
     printf "\r\033[2K"
 }
 
-cheesy_message() {
-    echo "${MAGENTA}${BOLD}${CHEESY[$((RANDOM % ${#CHEESY[@]}))]}${NC}"
-}
-
-random_no() {
-    echo "${YELLOW}${BOLD}${NO_VARIANTS[$((RANDOM % ${#NO_VARIANTS[@]}))]}${NC}"
-}
-
 header() {
     echo
-    echo "${CYAN}${BOLD}${DIVIDER}${NC}"
-    echo "${CYAN}${BOLD}$(printf "%*s" $(( (${#1} + $(tput cols)) / 2 )) "${1}")${NC}"
-    echo "${CYAN}${BOLD}${DIVIDER}${NC}"
+    echo "${GRAY}${DIVIDER}${NC}"
+    echo "${NEON_WHITE}${BOLD}$(printf "%*s" $(( (${#1} + $(tput cols)) / 2 )) "${1}")${NC}"
+    echo "${GRAY}${DIVIDER}${NC}"
     echo
-    cheesy_message
+    random_quip
     echo
 }
 
 success() {
-    echo "${GREEN}✅ $1${NC}"
+    echo "${GREEN}${BOLD}✓ ${NEON_WHITE}${1}${NC}"
 }
 
 warning() {
-    echo "${YELLOW}⚠️  $1${NC}"
+    echo "${YELLOW}${BOLD}⚠ ${NEON_WHITE}${1}${NC}"
 }
 
 error() {
-    echo "${RED}❌ $1${NC}"
+    echo "${RED}${BOLD}✗ ${NEON_WHITE}${1}${NC}"
     exit 1
 }
-
 ask() {
-    echo -e "\n${BOLD}${BLUE}❓ $1${NC}"
-    echo -n "${CYAN}[y/N]: ${NC}"
-    read -r choice
-    case "$choice" in
-        [Yy]* ) return 0 ;;
-        * ) random_no; return 1 ;;
+    local timeout=30
+    local question="$1"
+    local default="${2:-N}"
+    
+    # Using echo with escaped parentheses
+    echo -e "\n${BOLD}${BLUE}? ${NEON_WHITE}${question}${NC}"
+    echo -n "${CYAN}[y/N] (${timeout}s timeout): ${NC}"
+    
+    if ! read -t "$timeout" -r choice; then
+        echo -e "\n${YELLOW}Timeout reached. Using default: ${default}${NC}"
+        case "${default}" in
+            [Yy]*) return 0 ;;
+            *) return 1 ;;
+        esac
+    fi
+    
+    case "${choice}" in
+        [Yy]*) return 0 ;;
+        [Nn]*) random_reject; return 1 ;;
+        *) 
+            case "${default}" in
+                [Yy]*) return 0 ;;
+                *) random_reject; return 1 ;;
+            esac
+            ;;
     esac
 }
 
-# == LAUNCH SEQUENCE ==
-header "Cosmic Neovim Setup"
+# ==== PREMIUM LAUNCH SEQUENCE ====
+header "PREMIUM NEOVIM DEPLOYMENT"
 
-[ "$(id -u)" -eq 0 ] && error "Easy there, root cowboy. Run this as a user, not godmode."
+# Sudo verification with style
+echo "${BOLD}${NEON_WHITE}Verifying SUDO credentials...${NC}"
+if sudo -v; then
+    success "SUDO access confirmed. We have liftoff clearance! 🚀"
+else
+    error "SUDO verification failed. Aborting mission. 🚨"
+fi
 
-command -v sudo >/dev/null || error "Sudo missing? Bro, you tryna jailbreak a toaster?"
+# ==== SYSTEM CHECKS ====
+header "SYSTEM INSPECTION"
 
-sudo -v || error "Sudo timeout. Either type password or accept defeat."
-
-command -v python3 >/dev/null || error "Python3 not found. Are you even on Earth?"
+[ "$(id -u)" -eq 0 ] && error "Root detected! Regular user privileges required."
+command -v python3 >/dev/null || error "Python3 missing. This ain't the stone age."
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-[ ! -f "$SCRIPT_DIR/init.lua" ] && warning "init.lua missing in current dir. Sure you're not lost?"
+[ ! -f "$SCRIPT_DIR/init.lua" ] && warning "init.lua missing. Are we in the right directory?"
 
-# == INSTALLER ==
+# Interactive system scan
+if ask "Scan system for optimal configuration?" "Y"; then
+    (sudo lscpu | grep "Model name" && free -h) 2>/dev/null &
+    spinner "Analyzing system specs"
+    success "System scan complete. Ready for deployment."
+else
+    warning "System scan skipped. Proceeding blind. 🕶️"
+fi
+
+# ==== CORE DEPENDENCIES ====
+header "ESSENTIAL DEPENDENCIES"
+
 install_arch_pkg() {
     local pkg="$1"
     local reason="$2"
+    local critical="${3:-true}"
+    
     if pacman -Qi "$pkg" &>/dev/null; then
-        success "$pkg already chilling on your system"
+        success "${pkg} already installed and ready 💪"
     else
-        warning "$pkg missing! Reason: $reason"
-        if ask "Install $pkg now?"; then
+        warning "${pkg} missing! Required for: ${reason}"
+        if ask "Install ${pkg}?" "Y"; then
             (sudo pacman -S --noconfirm --needed "$pkg" >/dev/null 2>&1) &
-            spinner "Installing $pkg"
-            success "$pkg installed!"
+            spinner "Installing ${pkg}"
+            if [ $? -eq 0 ]; then
+                success "${pkg} successfully installed! 🎯"
+            else
+                if $critical; then
+                    error "Critical package ${pkg} failed! Aborting. 🚨"
+                else
+                    warning "${pkg} installation failed. Continuing anyway..."
+                fi
+            fi
+        elif $critical; then
+            error "Critical package skipped. Cannot continue. 💥"
         else
-            error "Mission failed. $pkg is mandatory."
+            warning "${pkg} skipped. Hope you know what you're doing. 🤞"
         fi
     fi
 }
 
-header "Checking Dependencies"
+# Core packages with premium status
+install_arch_pkg "neovim" "The premium editor experience" true
+install_arch_pkg "python-pip" "Python package excellence" true
+install_arch_pkg "nodejs" "JavaScript runtime supremacy" true
+install_arch_pkg "npm" "Node package mastery" true
+install_arch_pkg "clang" "C/C++ toolchain" false
 
-install_arch_pkg "neovim" "Editor of the gods"
-install_arch_pkg "python-pip" "Python package power"
-install_arch_pkg "nodejs" "JS LSP backbone"
-install_arch_pkg "npm" "JS dependency bridge"
-install_arch_pkg "clang" "C/C++ LSP tools"
+# ==== CLIPBOARD SUPPORT ====
+header "CLIPBOARD INTEGRATION"
 
-# == PYTHON TOOLS ==
-header "Setting up Python Arsenal"
+CLIPBOARD_NOTE="For seamless copy/paste experience"
+WAYLAND=$(env | grep -q WAYLAND_DISPLAY && echo 1 || echo 0)
+X11=$(env | grep -q DISPLAY && echo 1 || echo 0)
+
+if [ "$WAYLAND" -eq 1 ]; then
+    install_arch_pkg "wl-clipboard" "$CLIPBOARD_NOTE (Wayland)" false
+elif [ "$X11" -eq 1 ]; then
+    if ! command -v xclip >/dev/null && ! command -v xsel >/dev/null; then
+        warning "No clipboard tools detected"
+        if ask "Install xclip for premium clipboard support?" "Y"; then
+            (sudo pacman -S --noconfirm xclip >/dev/null 2>&1) &
+            spinner "Installing xclip"
+            success "xclip ready for action! 📋"
+        fi
+    else
+        success "Clipboard tools already installed 👍"
+    fi
+else
+    warning "No GUI environment detected. Clipboard might not work. 🤷"
+fi
+
+# ==== PYTHON ENVIRONMENT ====
+header "PYTHON SETUP"
 
 GLOBAL_PY="$HOME/.globalPython"
 
-[ ! -d "$GLOBAL_PY" ] && (python3 -m venv "$GLOBAL_PY" >/dev/null 2>&1) &
-spinner "Spinning up Python venv"
-success "Python venv created at ~/.globalPython"
-
-("$GLOBAL_PY/bin/pip" install --upgrade pip setuptools wheel >/dev/null 2>&1) &
-spinner "Upgrading pip systems"
-
-install_python_tool() {
-    local tool="$1"
-    local reason="$2"
-    [ -f "$GLOBAL_PY/bin/$tool" ] && success "$tool already geared up!" && return
-    warning "$tool missing: $reason"
-    if ask "Install $tool?"; then
-        ("$GLOBAL_PY/bin/pip" install "$tool" >/dev/null 2>&1) &
-        spinner "Installing $tool"
-        success "$tool ready for deployment"
+if [ ! -d "$GLOBAL_PY" ]; then
+    if ask "Set up Python virtual environment at $GLOBAL_PY?" "Y"; then
+        (python3 -m venv "$GLOBAL_PY" >/dev/null 2>&1) &
+        spinner "Creating premium Python environment"
+        success "Python virtualenv ready at ~/.globalPython 🐍"
     else
-        warning "$tool skipped. Hope you know what you're doing 🫠"
+        warning "Python virtual environment skipped. Risky move. 🎲"
     fi
-}
+else
+    success "Python environment already exists 🏰"
+fi
 
-install_python_tool "black" "Code auto-fixer"
-install_python_tool "isort" "Import sorting wizard"
-install_python_tool "pynvim" "Python-Neovim bridge"
+if [ -d "$GLOBAL_PY" ]; then
+    ("$GLOBAL_PY/bin/pip" install --upgrade pip setuptools wheel >/dev/null 2>&1) &
+    spinner "Upgrading Python toolchain ⬆️"
+    
+    install_python_tool() {
+        local tool="$1"
+        local reason="$2"
+        local critical="${3:-false}"
+        
+        if "$GLOBAL_PY/bin/pip" show "$tool" >/dev/null 2>&1; then
+            success "${tool} already installed ✅"
+        else
+            warning "${tool} missing: ${reason}"
+            if ask "Install ${tool}?" "Y"; then
+                ("$GLOBAL_PY/bin/pip" install "$tool" >/dev/null 2>&1) &
+                spinner "Installing ${tool}"
+                if "$GLOBAL_PY/bin/pip" show "$tool" >/dev/null 2>&1; then
+                    success "${tool} installed successfully! 🎯"
+                else
+                    if $critical; then
+                        error "Critical Python tool ${tool} failed! Abort! 🚨"
+                    else
+                        warning "${tool} installation failed. Moving on..."
+                    fi
+                fi
+            elif $critical; then
+                error "Critical Python tool skipped! Cannot continue! 💥"
+            else
+                warning "${tool} skipped. Hope you have alternatives. 🤷"
+            fi
+        fi
+    }
+    
+    # Essential Python tools
+    install_python_tool "pynvim" "Neovim Python integration" true
+    install_python_tool "black" "Code formatting perfection" false
+    install_python_tool "isort" "Import organization" false
+fi
 
-# == OPTIONAL TOOLS ==
-header "Installing Optional Enhancers"
+# ==== OPTIONAL ENHANCEMENTS ====
+header "PREMIUM ENHANCEMENTS"
 
 install_optional_pkg() {
     local pkg="$1"
     local reason="$2"
     local install_cmd="$3"
-
+    
     if command -v "$pkg" &>/dev/null; then
-        success "$pkg already on board"
+        success "${pkg} already installed 🌟"
     else
-        warning "$pkg could boost your life: $reason"
-        if ask "Install $pkg?"; then
+        warning "${pkg} would enhance: ${reason}"
+        if ask "Install ${pkg}?" "N"; then
             (eval "$install_cmd" >/dev/null 2>&1) &
-            spinner "Installing $pkg"
-            success "$pkg installed!"
+            spinner "Installing ${pkg}"
+            if command -v "$pkg" &>/dev/null; then
+                success "${pkg} installed successfully! 🎊"
+            else
+                warning "${pkg} installation failed. No worries."
+            fi
         else
-            warning "$pkg left out. Like your last situationship."
+            warning "${pkg} skipped. Basic mode engaged."
         fi
     fi
 }
 
-install_optional_pkg "stylua" "Format Lua files like a boss" \
+install_optional_pkg "stylua" "Lua code formatting" \
     "sudo pacman -S --noconfirm stylua || cargo install stylua"
 
-# == CONFIG DEPLOYMENT ==
-header "Deploying Neovim Config"
+# ==== CONFIG DEPLOYMENT ====
+header "PREMIUM CONFIG DEPLOYMENT"
 
 NVIM_CONFIG_PATH="$HOME/.config/nvim"
 BACKUP_DIR="${NVIM_CONFIG_PATH}_backup_$(date +%Y%m%d_%H%M%S)"
 
 if [ -d "$NVIM_CONFIG_PATH" ]; then
-    warning "Existing config found!"
-    if ask "Backup and overwrite it?"; then
-        mv "$NVIM_CONFIG_PATH" "$BACKUP_DIR"
-        success "Backup saved at $BACKUP_DIR"
+    warning "Existing Neovim config detected!"
+    if ask "Create backup and install premium config?" "Y"; then
+        (mv "$NVIM_CONFIG_PATH" "$BACKUP_DIR" >/dev/null 2>&1) &
+        spinner "Creating backup"
+        success "Backup saved at $BACKUP_DIR 📦"
     else
-        error "Overwrite denied. Exiting with attitude."
+        error "Installation aborted by user. No changes made. ✋"
     fi
 fi
 
-mkdir -p "$NVIM_CONFIG_PATH"
-cp -r "$SCRIPT_DIR/"* "$NVIM_CONFIG_PATH/"
-success "Config deployed at $NVIM_CONFIG_PATH"
+(mkdir -p "$NVIM_CONFIG_PATH" && cp -r "$SCRIPT_DIR/"* "$NVIM_CONFIG_PATH/") &
+spinner "Deploying premium config files"
+success "Configuration deployed to $NVIM_CONFIG_PATH 🎯"
 
-# == PLUGIN SYNC ==
-header "Syncing Plugin Universe"
+# ==== PLUGIN SYNC ====
+header "PREMIUM PLUGIN INSTALLATION"
 
-echo -n "Plugin sync may take a moment..."
-if nvim --headless "+Lazy! sync" +qa 2>/tmp/nvim_sync.log; then
-    success "Plugins synced!"
+echo -e "${BLUE}This may take a while... perfect time for a coffee break! ☕${NC}"
+if ask "Proceed with premium plugin installation?" "Y"; then
+    if nvim --headless "+Lazy! sync" +qa 2>/tmp/nvim_sync.log; then
+        success "All premium plugins installed successfully! Ready to code! 💻"
+    else
+        warning "Plugin installation encountered issues"
+        echo -e "${YELLOW}Check logs: /tmp/nvim_sync.log${NC}"
+        echo -e "${CYAN}Try manual sync: nvim +Lazy sync${NC}"
+    fi
 else
-    error "Plugin sync failed!"
-    warning "Try manually: ${BOLD}nvim +Lazy sync${NC}"
-    warning "Log: /tmp/nvim_sync.log"
+    warning "Plugin installation skipped. Run manually later."
 fi
 
-# == WRAP-UP ==
-header "All Systems Go"
+# ==== COMPLETION ====
+header "MISSION ACCOMPLISHED"
 
 cat <<EOF
-${GREEN}${BOLD}Neovim is now turbocharged!${NC}
+${GREEN}${BOLD}Premium Neovim configuration successfully installed!${NC}
 
-🔮 Launch:     ${BOLD}nvim${NC}
-🧪 Health:     ${BOLD}nvim +checkhealth${NC}
-📦 Plugins:    ${BOLD}nvim +Lazy update${NC}
-🐍 Python bin: ${BOLD}$HOME/.globalPython/bin${NC}
-🔧 Add to PATH:
+${NEON_WHITE}${BOLD}QUICK START GUIDE:${NC}
+  🚀 ${BOLD}nvim${NC}          - Launch your premium editor
+  🧪 ${BOLD}nvim +checkhealth${NC} - Verify everything works
+  🔄 ${BOLD}nvim +Lazy update${NC} - Update plugins
+
+${CYAN}${BOLD}PYTHON TOOLS:${NC}
+  Located in ${BOLD}~/.globalPython/bin${NC}
+  Add to PATH for easy access:
   ${BOLD}export PATH="\$HOME/.globalPython/bin:\$PATH"${NC}
 
-${MAGENTA}Remember: Tabs over spaces... or war. 🚀${NC}
+${NEON_WHITE}Happy coding! May your bugs be few and your coffee strong! ☕${NC}
 EOF
 
-echo -n "${BOLD}Final countdown "
+# Final countdown
+echo -e "\n${BOLD}${NEON_WHITE}Launching in "
 for i in {5..1}; do
-    echo -n "$i "
-    sleep 0.2
+    echo -n "${i}..."
+    sleep 0.5
 done
-echo "${GREEN}💥 GO TIME!${NC}"
-
+echo -e " ${GREEN}${BOLD}LIFTOFF! 🚀${NC}\n"

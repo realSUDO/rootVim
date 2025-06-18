@@ -1,7 +1,8 @@
-<h1 align="center">🧠 justmultiply/nvim</h1>
+# 🧠 justmultiply/nvim
+
 <p align="center">
   <b>Hyper-minimal. Blazing Fast. Battle-ready Neovim config.</b><br>
-  ⚙️ Built for speed • 🧬 Modular by design • ⌨️ Terminal-native focus
+  ⚙️ Built for speed • 🧩 Modular by design • ⌨️ Terminal-native focus
 </p>
 
 <p align="center">
@@ -12,34 +13,114 @@
 
 ---
 
-## 🚀 Quick Installation
+## 🚀 Installation
 
-> ⚠️ Requires Neovim 0.9+ and a Unix-based system (Tested on Arch Linux)
+### Section 1: Auto Installation (Recommended)
+
+Run this one-liner to install with all dependencies:
+
+```bash
+curl -sL https://raw.githubusercontent.com/justmultiply/neovimconfig/main/install.sh | bash
+```
+
+Or clone and run manually:
+
+```bash
+git clone https://github.com/justmultiply/neovimconfig && cd neovimconfig && chmod +x install.sh && ./install.sh
+```
+
+The installer will:
+
+- Install all required dependencies
+- Set up Python virtual environment
+- Configure clipboard support
+- Back up existing config (if any)
+- Install all plugins automatically
+
+---
+
+### Section 2: Manual Installation
+
+#### 🧱 Dependencies
+
+**Core Requirements:**
+
+- Neovim 0.9+
+- Python 3.10+ with pip
+- Node.js 16+
+- npm
+
+**Arch Linux:**
+
+```bash
+sudo pacman -S --needed neovim python-pip nodejs npm clang
+```
+
+**Ubuntu/Debian:**
+
+```bash
+sudo apt install neovim python3-pip nodejs npm clang
+```
+
+**Python Packages:**
+
+```bash
+python3 -m venv ~/.globalPython
+~/.globalPython/bin/pip install pynvim black isort
+```
+
+**Clipboard Support:**
+
+- X11: `sudo pacman -S xclip` or `sudo apt install xclip`
+- Wayland: `sudo pacman -S wl-clipboard` or `sudo apt install wl-clipboard`
+
+#### ⚙️ Configuration
 
 ```bash
 git clone https://github.com/justmultiply/neovimconfig ~/.config/nvim
-nvim
+nvim +Lazy sync
 ```
 
-Lazy.nvim will auto-install plugins on first launch.
-
 ---
 
-## 🧭 Overview
+## 🎮 Getting Started
 
-A lean, modular, high-performance Neovim configuration tailored for Linux + Tiling WMs. Built for users who demand precision and aesthetics.
+### Core Shortcuts
 
-> *This is not a starter config. This is a tactical editor setup.*
+**General:**
 
----
+- `<leader>` = Space
+- `;` = `:`
+- `<C-s>` = Save
+- `<C-q>` = Quit
+- `<leader>q` = Close buffer
 
-## 🖼️ Screenshots
+**Navigation:**
 
-| UI Preview | Telescope | Zeroscreen (Alpha.nvim) |
-|------------|-----------|--------------------------|
-| ![UI](./media/ui.png) | ![Telescope](./media/telescope.png) | ![Alpha](./media/zero.png) |
+- `<C-h/j/k/l>` = Window navigation
+- `<leader>e` = File explorer (Neotree)
+- `<leader>f` = Find files (Telescope)
+- `<leader>g` = Live grep (Telescope)
+- `<leader>b` = Buffer list
 
-> 🖼️ Home screen powered by [alpha-nvim](https://github.com/goolord/alpha-nvim)
+**LSP:**
+
+- `gd` = Go to definition
+- `gr` = Go to references
+- `K` = Hover info
+- `<leader>d` = Open diagnostics
+- `<leader>rn` = Rename symbol
+
+**Git:**
+
+- `<leader>gs` = Git status (Neogit)
+- `<leader>gb` = Git blame
+- `<leader>gd` = Git diff
+
+**UI:**
+
+- `<leader>u` = Toggle theme
+- `<leader>tt` = Toggle terminal
 
 ---
 
@@ -47,7 +128,7 @@ A lean, modular, high-performance Neovim configuration tailored for Linux + Tili
 
 - 🚀 Fast lazy-loaded startup via Lazy.nvim
 - 🎯 Minimal UI with floating borders & clean highlights
-- 🔧 LSP, Mason, Autocompletion (`nvim-cmp`)
+- 🔧 LSP, Mason, Autocompletion (nvim-cmp)
 - 🔍 Telescope for fuzzy file/symbol navigation
 - 🌌 TokyoNight theme for a modern look
 - 📜 Treesitter for advanced syntax highlighting
@@ -60,41 +141,18 @@ A lean, modular, high-performance Neovim configuration tailored for Linux + Tili
 
 ## 🧩 Tech Stack
 
-| Tool / Plugin     | Purpose                       |
-|-------------------|-------------------------------|
-| Neovim (0.9+)     | Core Editor                   |
-| Lua               | Configuration Language        |
-| Lazy.nvim         | Plugin Manager                |
-| Mason.nvim        | LSP/DAP Installer             |
-| Telescope         | Fuzzy Finder                  |
-| Treesitter        | Syntax Highlighting           |
-| nvim-cmp          | Autocompletion                |
-| Lualine           | Status Line                   |
-| TokyoNight        | Theme                         |
-| alpha-nvim        | Custom Dashboard / Zeroscreen |
-
----
-
-## 💻 Languages Supported (Out-of-the-box)
-
-- 🐍 Python
-- 📜 JavaScript / TypeScript
-- 🌐 HTML / CSS / Tailwind
-- 📦 JSON / YAML / TOML
-- 🔧 Bash / Shell
-- ☕ Java
-- 🧠 Lua
-
-> Managed via Mason. Add more with a few lines.
-
----
-
-## 🎯 Usage & Benefits
-
-- Distraction-free workflow for focused development
-- Power-user navigation: instant file/symbol jumping
-- Minimal boilerplate—only what you need, nothing else
-- Built to feel *invisible*—everything just works
+| Tool / Plugin   | Purpose                        |
+|-----------------|--------------------------------|
+| Neovim (0.9+)   | Core Editor                    |
+| Lua             | Configuration Language         |
+| Lazy.nvim       | Plugin Manager                 |
+| Mason.nvim      | LSP/DAP Installer              |
+| Telescope       | Fuzzy Finder                   |
+| Treesitter      | Syntax Highlighting            |
+| nvim-cmp        | Autocompletion                 |
+| Lualine         | Status Line                    |
+| TokyoNight      | Theme                          |
+| alpha-nvim      | Custom Dashboard / Zeroscreen  |
 
 ---
 
@@ -108,8 +166,6 @@ A lean, modular, high-performance Neovim configuration tailored for Linux + Tili
 
 ## 🪪 License
 
-MIT © [justmultiply](https://github.com/justmultiply)
-
----
+MIT © justmultiply
 
 <p align="center"><i>“There is elegance in speed. There is beauty in silence.”</i></p>
