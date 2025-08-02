@@ -1,39 +1,32 @@
-local toggleCopilot = require "config.toggleCopilot"
---define a function to toggle copilot
+-- keybinding.lua
+-- realSUDO's cheat codes for nvim ✨
 
+local toggleCopilot = require("config.toggleCopilot")
 
---define a helper function to set keymapping..
+-- Mini-map-maker (because typing full commands is for noobs)
 local function map(mode, lhs, rhs, opts)
-	--set defualt options
-	local options = { noremap = true, silent = true }
-	--for additional option .. merge if provided
-	if opts then
-		options = vim.tbl_extend("force", options, opts)
-	end
-	--set keymapping using final option
-	vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+  opts = vim.tbl_extend("force", { noremap = true, silent = true }, opts or {})
+  vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
 end
---switching panes
-map("n", "<C-j>", "<C-w>j")
-map("n", "<C-l>", "<C-w>l")
-map("n", "<C-k>", "<C-w>k")
-map("n", "<C-h>", "<C-w>h")
 
---closing terminal
-map("t", "<leader>tt", "exit <CR> ", {})
+-- Window-hopping (like tabs but cooler)
+map("n", "<C-h>", "<C-w>h") -- ←
+map("n", "<C-j>", "<C-w>j") -- ↓
+map("n", "<C-k>", "<C-w>k") -- ↑ 
+map("n", "<C-l>", "<C-w>l") -- →
 
---compile and run
-map("n", "<leader><leader><leader>r", ":w<CR> | :lua CompileAndRun()<CR>")
+-- Terminal tricks
+map("t", "<leader>tt", "<C-\\><C-n>")      -- Proper terminal exit
+map("n", "<leader>tt", '<cmd>lua OpenClearTerminal("h")<CR>') -- Split me
+map("n", "<leader>ty", '<cmd>lua OpenClearTerminal("v")<CR>') -- Split me sideways
 
---open terminal horizontal
-map("n", "<leader>tt", ':lua OpenClearTerminal("horizontal")<CR>')
+-- Magic buttons
+map("n", "<C-p>", "<cmd>Telescope find_files<CR>") -- Find All The Things™
+map("n", "<leader>rrr", "<cmd>w | lua CompileAndRun()<CR>") -- Compile-go-brrr
 
---open terminal vertical
-map("n", "<leader>ty", ':lua OpenClearTerminal("vertical")<CR>')
+-- Toggle-ables (FIXED)
+vim.keymap.set("n", "<leader>co", toggleCopilot.ToggleCopilot, { desc = "AI go brrr" })
+map("n", "<leader>tw", "<cmd>lua require('toggleWrap').toggle()<CR>", { desc = "Wrap it like burrito" })
 
---telescope : find file	
-map("n","<C-p>","<cmd>lua require('telescope.builtin').find_files()<CR>")
+-- Pro tip: Now you can type these with BOTH hands while drinking coffee ☕
 
-map("n", "<leader><leader>co" , ":lua ToggleCopilot()<CR>")
-
-vim.keymap.set("n","<leader><leader>co", toggleCopilot.ToggleCopilot, {noremap = true , silent = true , desc = "Toggle Copilot"})

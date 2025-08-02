@@ -1,4 +1,4 @@
-# 🧠 justmultiply/nvim
+# 🧠 realSUDO/nvim
 
 <p align="center">
   <b>Hyper-minimal. Blazing Fast. Battle-ready Neovim config.</b><br>
@@ -20,13 +20,13 @@
 Run this one-liner to install with all dependencies:
 
 ```bash
-curl -sL https://raw.githubusercontent.com/justmultiply/neovimconfig/main/install.sh | bash
+curl -sL https://raw.githubusercontent.com/realSUDO/neovimconfig/main/install.sh | bash
 ```
 
 Or clone and run manually:
 
 ```bash
-git clone https://github.com/justmultiply/neovimconfig && cd neovimconfig && chmod +x install.sh && ./install.sh
+git clone https://github.com/realSUDO/neovimconfig && cd neovimconfig && chmod +x install.sh && ./install.sh
 ```
 
 The installer will:
@@ -77,7 +77,7 @@ python3 -m venv ~/.globalPython
 #### ⚙️ Configuration
 
 ```bash
-git clone https://github.com/justmultiply/neovimconfig ~/.config/nvim
+git clone https://github.com/realSUDO/neovimconfig ~/.config/nvim
 nvim +Lazy sync
 ```
 
@@ -166,6 +166,6 @@ nvim +Lazy sync
 
 ## 🪪 License
 
-MIT © justmultiply
+MIT © realSUDO
 
 <p align="center"><i>“There is elegance in speed. There is beauty in silence.”</i></p>
