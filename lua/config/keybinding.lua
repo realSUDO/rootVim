@@ -22,10 +22,10 @@ map("n", "<leader>ty", '<cmd>lua OpenClearTerminal("v")<CR>') -- Split me sidewa
 
 -- Magic buttons
 map("n", "<C-p>", "<cmd>Telescope find_files<CR>") -- Find All The Things™
-map("n", "<leader>rrr", "<cmd>w | lua CompileAndRun()<CR>") -- Compile-go-brrr
+map("n", "<leader><leader><leader>r", "<cmd>w | lua CompileAndRun()<CR>") -- Compile-go-brrr
 
 -- Toggle-ables (FIXED)
-vim.keymap.set("n", "<leader>co", toggleCopilot.ToggleCopilot, { desc = "AI go brrr" })
+vim.keymap.set("n", "<leader><leader>co", toggleCopilot.ToggleCopilot, { desc = "AI go brrr" })
 map("n", "<leader>tw", "<cmd>lua require('toggleWrap').toggle()<CR>", { desc = "Wrap it like burrito" })
 
 -- Pro tip: Now you can type these with BOTH hands while drinking coffee ☕
