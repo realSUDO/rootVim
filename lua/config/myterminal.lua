@@ -9,13 +9,6 @@ function M.OpenClearTerminal(direction)
 
   vim.api.nvim_feedkeys("clear\n", "n", false)
   vim.cmd("startinsert")
-
-  vim.cmd [[
-    augroup TerminalAutoClose
-      autocmd!
-      autocmd TermClose * if !v:event.status | close | endif
-    augroup END
-  ]]
 end
 
 return M
