@@ -36,6 +36,9 @@ require("config.myterminal")      -- Terminal integration and management
 require("config.snippets")       -- Code snippet configurations
 require("config.comments")       -- Enhanced comment functionality
 require("config.clipboard")      -- Clipboard integration settings
+require("config.theme-selector") -- Theme selection and management
+require("config.current-theme") -- Load current theme settings
+
 
 -- ======================
 -- Toggle Features
@@ -44,6 +47,8 @@ require("config.toggleCopilot")   -- GitHub Copilot integration toggle
 require("config.flashYanked")     -- Visual feedback for yanked text
 require("config.toggleWrap")      -- Smart text wrapping toggle
 vim.cmd("Copilot disable")		  -- Disable copilot on startup
+
+
 
 -- realsudo out ✌️(ツ)_/¯
 -- "Works on my machine" certified™
