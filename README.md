@@ -1,7 +1,7 @@
-# 🧠 realSUDO/nvim
+# 🧠 realSUDO/rootVim
 
 <p align="center">
-  <b>Hyper-minimal. Blazing Fast. Battle-ready Neovim config.</b><br>
+  <b>Hyper-minimal. Blazing Fast. Battle-ready Neovim Config.</b><br>
   ⚙️ Built for speed • 🧩 Modular by design • ⌨️ Terminal-native focus
 </p>
 
@@ -13,129 +13,156 @@
 
 ---
 
-## 🚀 Installation
+## ⚡ Quickstart
 
-### Section 1: Auto Installation (Recommended)
+Get up & running instantly:
+
+```bash
+git clone https://github.com/realSUDO/rootVim ~/.config/nvim 
+nvim +Lazy sync
+```
+
+✨ That’s it. Restart Neovim and you’re inside **realSUDO/rootVim**.
+
+### 🔑 Quick Binds (Essentials)
+
+| Action                  | Keybind                |
+|--------------------------|------------------------|
+| Hover Docs               | `K`                   |
+| Go to Definition         | `gd`                  |
+| Code Action              | `<leader>ca`          |
+| Format Buffer            | `<leader>gf`          |
+| File Explorer (Neo-tree) | `<leader>nn` / `<leader>nt` |
+| Breakpoint (DAP)         | `<leader>dt`          |
+| Continue (DAP)           | `<leader>dc`          |
+| Find Files (Telescope)   | `<C-p>`               |
+| Terminal Horizontal      | `<leader>tt` (n)      |
+| Terminal Vertical        | `<leader>ty`          |
+| Window Navigation        | `<C-h/j/k/l>`         |
+| Compile & Run            | `<leader><leader><leader>r` |
+
+---
+
+## 🚀 Full Installation
+
+### Auto Installation (Recommended)
 
 Run this one-liner to install with all dependencies:
 
 ```bash
-curl -sL https://raw.githubusercontent.com/realSUDO/neovimconfig/main/install.sh | bash
+curl -sL https://raw.githubusercontent.com/realSUDO/rootVim/main/install.sh | bash
 ```
 
 Or clone and run manually:
 
 ```bash
-git clone https://github.com/realSUDO/neovimconfig && cd neovimconfig && chmod +x install.sh && ./install.sh
+git clone https://github.com/realSUDO/rootVim && cd rootVim && chmod +x install.sh && ./install.sh
 ```
 
 The installer will:
+- Install dependencies
+- Configure Python + Clipboard
+- Backup existing configs
+- Auto-install all plugins
 
-- Install all required dependencies
-- Set up Python virtual environment
-- Configure clipboard support
-- Back up existing config (if any)
-- Install all plugins automatically
+### Manual Installation
 
----
-
-### Section 2: Manual Installation
-
-#### 🧱 Dependencies
-
-**Core Requirements:**
-
+**Dependencies:**
 - Neovim 0.9+
-- Python 3.10+ with pip
-- Node.js 16+
-- npm
-
-**Arch Linux:**
+- Python 3.10+ + pip
+- Node.js 16+ + npm
+- Clang
 
 ```bash
+# Arch
 sudo pacman -S --needed neovim python-pip nodejs npm clang
-```
 
-**Ubuntu/Debian:**
-
-```bash
+# Ubuntu/Debian
 sudo apt install neovim python3-pip nodejs npm clang
 ```
 
-**Python Packages:**
-
+Python Env:
 ```bash
 python3 -m venv ~/.globalPython
 ~/.globalPython/bin/pip install pynvim black isort
 ```
 
-**Clipboard Support:**
+Clipboard:
+- X11 → `xclip`
+- Wayland → `wl-clipboard`
 
-- X11: `sudo pacman -S xclip` or `sudo apt install xclip`
-- Wayland: `sudo pacman -S wl-clipboard` or `sudo apt install wl-clipboard`
-
-#### ⚙️ Configuration
-
+Config:
 ```bash
-git clone https://github.com/realSUDO/neovimconfig ~/.config/nvim
+git clone https://github.com/realSUDO/rootVim ~/.config/nvim
 nvim +Lazy sync
 ```
 
 ---
 
-## 🎮 Getting Started
+## 🎮 Full Keymap Reference
 
-### Core Shortcuts
+<details>
+<summary>Click to Expand</summary>
 
-**General:**
+### LSP
+- `K` → Hover docs  
+- `gd` → Go to definition  
+- `<leader>ca` → Code actions (normal/visual)
 
-- `<leader>` = Space
-- `;` = `:`
-- `<C-s>` = Save
-- `<C-q>` = Quit
-- `<leader>q` = Close buffer
+### Tree-sitter
+- `<C-space>` → Init selection / Node incremental  
+- `<bs>` → Node decremental
 
-**Navigation:**
+### Null-ls
+- `<leader>gf` → Format buffer (5s timeout)
 
-- `<C-h/j/k/l>` = Window navigation
-- `<leader>e` = File explorer (Neotree)
-- `<leader>f` = Find files (Telescope)
-- `<leader>g` = Live grep (Telescope)
-- `<leader>b` = Buffer list
+### Neo-tree
+- `<leader>nn` → Reveal filesystem (left)  
+- `<leader>nt` → Toggle tree
 
-**LSP:**
+### Debugging (DAP)
+- `<leader>dt` → Toggle breakpoint  
+- `<leader>dc` → Continue execution
 
-- `gd` = Go to definition
-- `gr` = Go to references
-- `K` = Hover info
-- `<leader>d` = Open diagnostics
-- `<leader>rn` = Rename symbol
+### Completions (nvim-cmp)
+- `<C-b>` / `<C-f>` → Scroll docs up/down  
+- `<C-Space>` → Trigger completion  
+- `<C-e>` → Abort completion  
+- `<CR>` → Confirm selection
 
-**Git:**
+### Navigation
+- `<C-h/j/k/l>` → Window navigation (left/down/up/right)
 
-- `<leader>gs` = Git status (Neogit)
-- `<leader>gb` = Git blame
-- `<leader>gd` = Git diff
+### Terminals
+- `<leader>tt` (t) → Close terminal pane  
+- `<leader>tt` (n) → Open horizontal terminal  
+- `<leader>ty` → Open vertical terminal
 
-**UI:**
+### Utilities
+- `<C-p>` → Find files (Telescope)  
+- `<leader><leader><leader>r` → Save + Compile & Run  
+- `<leader><leader>co` → Toggle Copilot  
+- `<leader>tw` → Toggle line wrap
 
-- `<leader>u` = Toggle theme
-- `<leader>tt` = Toggle terminal
+### Snippets
+- `<Tab>` → Expand snippet / Jump forward  
+- `<S-Tab>` → Jump backward
+
+</details>
 
 ---
 
-## ⚙️ Core Features
-
-- 🚀 Fast lazy-loaded startup via Lazy.nvim
-- 🎯 Minimal UI with floating borders & clean highlights
-- 🔧 LSP, Mason, Autocompletion (nvim-cmp)
-- 🔍 Telescope for fuzzy file/symbol navigation
-- 🌌 TokyoNight theme for a modern look
-- 📜 Treesitter for advanced syntax highlighting
-- 🗂️ Neotree for file browsing
-- 📊 Statusline with Lualine
-- 🧠 LSP Diagnostics, DAP-ready
-- 🏠 Beautiful start screen with ASCII art & sessions
+## ⚙️ Features
+- 🚀 Ultra-fast lazy-loading
+- 🎯 Minimal UI (floating borders, clean highlights)
+- 🔧 LSP, Mason, Autocompletion
+- 🔍 Telescope for navigation
+- 🌌 TokyoNight theme
+- 📜 Treesitter highlighting
+- 🗂️ Neotree file browsing
+- 📊 Lualine statusline
+- 🧠 Diagnostics + DAP ready
+- 🏠 ASCII start screen + sessions
 
 ---
 
@@ -152,15 +179,14 @@ nvim +Lazy sync
 | nvim-cmp        | Autocompletion                 |
 | Lualine         | Status Line                    |
 | TokyoNight      | Theme                          |
-| alpha-nvim      | Custom Dashboard / Zeroscreen  |
+| alpha-nvim      | Dashboard / Zeroscreen         |
 
 ---
 
 ## 📉 Limitations
-
-- ❌ Not beginner-friendly (requires Neovim knowledge)
-- ⛔ Terminal-only (no GUI support)
-- 🌱 Manual plugin tweaking for unsupported languages
+- ❌ Not beginner-friendly
+- ⛔ Terminal-only (no GUI)
+- 🌱 Some language configs require manual tweaks
 
 ---
 
@@ -169,3 +195,4 @@ nvim +Lazy sync
 MIT © realSUDO
 
 <p align="center"><i>“There is elegance in speed. There is beauty in silence.”</i></p>
+
