@@ -23,9 +23,12 @@ return {
 			local lspconfig = require("lspconfig")
 
 			-- 🔁 Determine pythonPath for pyright
-			local global_py = os.getenv("HOME") .. "/.globalPython/bin/python"
+			local packaged_py = "/usr/share/rootvim/.globalPython/bin/python" 
+ 			local global_py = os.getenv("HOME") .. "/.globalPython/bin/python"
 			local python_path = ""
-			if vim.fn.filereadable(global_py) == 1 then
+			if vim.fn.filereadable(packaged_py) == 1 then
+				python_path = packaged_py
+			elseif vim.fn.filereadable(global_py) == 1 then
 				python_path = global_py
 			elseif vim.fn.executable("python3") == 1 then
 				python_path = vim.fn.exepath("python3")

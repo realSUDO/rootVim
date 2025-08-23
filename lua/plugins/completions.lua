@@ -11,8 +11,12 @@ return {
 			"quangnguyen30192/cmp-nvim-ultisnips",
 		},
 		config = function()
+			local packaged_py = "/usr/share/rootvim/.globalPython/bin/python3"
 			local global_py = os.getenv("HOME") .. "/.globalPython/bin/python3"
-			if vim.fn.filereadable(global_py) == 1 then
+
+			if vim.fn.filereadable(packaged_py) == 1 then
+				vim.g.python3_host_prog = packaged_py
+			elseif vim.fn.filereadable(global_py) == 1 then
 				vim.g.python3_host_prog = global_py
 			elseif vim.fn.executable("python3") == 1 then
 				vim.g.python3_host_prog = vim.fn.exepath("python3")

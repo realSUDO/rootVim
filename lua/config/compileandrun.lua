@@ -16,8 +16,12 @@ function CompileAndRun()
 
 	-- Resolve portable python path
 	local function get_python_path()
+		local packaged = "/usr/share/rootvim/.globalPython/bin/python"
 		local global = vim.fn.expand("~/.globalPython/bin/python")
-		if vim.fn.filereadable(global) == 1 then
+
+		if vim.fn.filereadable(packaged) == 1 then
+			return packaged
+		elseif vim.fn.filereadable(global) == 1 then
 			return global
 		elseif vim.fn.executable("python3") == 1 then
 			return vim.fn.exepath("python3")
