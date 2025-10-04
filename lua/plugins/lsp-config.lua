@@ -20,7 +20,6 @@ return {
 		"neovim/nvim-lspconfig",
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
-			local lspconfig = require("lspconfig")
 
 			-- 🔁 Determine pythonPath for pyright
 			local packaged_py = "/usr/share/rootvim/.globalPython/bin/python" 
@@ -36,27 +35,35 @@ return {
 				vim.notify("[LSP] No valid Python interpreter found for Pyright", vim.log.levels.WARN)
 			end
 
-			-- 🧠 LSP setups
-			lspconfig.lua_ls.setup({
+			-- 🧠 LSP setups using vim.lsp.config
+			vim.lsp.config.lua_ls = {
+				cmd = { "lua-language-server" },
 				capabilities = capabilities,
-			})
-			lspconfig.clangd.setup({
+			}
+			vim.lsp.config.clangd = {
+				cmd = { "clangd" },
 				capabilities = capabilities,
-			})
-			lspconfig.ts_ls.setup({ -- correct: tsserver not ts_ls
+			}
+			vim.lsp.config.ts_ls = {
+				cmd = { "typescript-language-server", "--stdio" },
 				capabilities = capabilities,
-			})
-			lspconfig.bashls.setup({
+			}
+			vim.lsp.config.bashls = {
+				cmd = { "bash-language-server", "start" },
 				capabilities = capabilities,
-			})
-			lspconfig.pyright.setup({
+			}
+			vim.lsp.config.pyright = {
+				cmd = { "pyright-langserver", "--stdio" },
 				capabilities = capabilities,
 				settings = {
 					python = {
 						pythonPath = python_path,
 					},
 				},
-			})
+			}
+
+			-- Enable LSPs
+			vim.lsp.enable({ "lua_ls", "clangd", "ts_ls", "bashls", "pyright" })
 
 			-- 🗝️ Keymaps
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, {})

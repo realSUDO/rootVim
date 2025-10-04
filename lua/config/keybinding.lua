@@ -36,3 +36,12 @@ map("n", "<leader>tw", "<cmd>lua require('config.toggleWrap').toggle()<CR>", { d
 
 -- Pro tip: Now you can type these with BOTH hands while drinking coffee ☕
 
+-- Diagnostics / LSP Error Navigation
+vim.keymap.set("n", "<leader>e", function()
+  vim.diagnostic.open_float(nil, { focusable = false, border = "rounded" })
+end, { desc = "Show diagnostic message" })
+
+vim.keymap.set("n", "<leader>Ne", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
+vim.keymap.set("n", "<leader>ne", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
+vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+
