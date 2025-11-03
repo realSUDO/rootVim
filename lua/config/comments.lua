@@ -1,6 +1,7 @@
--- Function to set commentstring for specific filetypes
+-- Function to set commentstring and disable auto-comment continuation
 local function set_commentstring()
 	vim.bo.commentstring = "// %s"
+	vim.bo.formatoptions = vim.bo.formatoptions:gsub("[ro]", "")
 end
 
 -- Autocommand for C files
