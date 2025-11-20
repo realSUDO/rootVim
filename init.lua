@@ -20,7 +20,7 @@ vim.cmd("set smarttab")           -- Smart tab handling at start of line
 vim.cmd("set autoindent")         -- Maintain indent on new lines
 vim.cmd("set number")             -- Show absolute line numbers
 vim.wo.relativenumber = true      -- Show relative line numbers (window-local)
-
+vim.opt.termguicolors = true     -- Enable 24-bit RGB colors
 -- ======================
 -- Plugin Management
 -- ======================

@@ -73,7 +73,7 @@ function CompileAndRun()
 	-- HTML
 	elseif ft == "html" then
 		vim.cmd("w")
-		vim.cmd("belowright 13split | terminal live-server")
+		vim.cmd("belowright 13split | terminal live-server %")
 	end
 end
 
