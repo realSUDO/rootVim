@@ -9,6 +9,7 @@ return {
 		"SirVer/ultisnips",
 		dependencies = {
 			"quangnguyen30192/cmp-nvim-ultisnips",
+			"honza/vim-snippets",
 		},
 		config = function()
 			local packaged_py = "/usr/share/rootvim/.globalPython/bin/python3"
