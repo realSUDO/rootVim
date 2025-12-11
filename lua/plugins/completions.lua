@@ -4,6 +4,10 @@ return {
 	},
 	{
 		"github/copilot.vim",
+		"CopilotC-Nvim/CopilotChat.nvim"
+	},
+	{
+		"nvim-lua/plenary.nvim",
 	},
 	{
 		"SirVer/ultisnips",

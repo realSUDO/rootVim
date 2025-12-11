@@ -61,9 +61,13 @@ return {
 					},
 				},
 			}
+			vim.lsp.config.emmet_ls = {
+				cmd = {"emmet-language-server"},
+				capabilities = capabilities,
+			}
 
 			-- Enable LSPs
-			vim.lsp.enable({ "lua_ls", "clangd", "ts_ls", "bashls", "pyright" })
+			vim.lsp.enable({ "lua_ls", "clangd", "ts_ls", "bashls", "pyright","emmet_ls" })
 
 			-- 🗝️ Keymaps
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
