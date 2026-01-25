@@ -62,7 +62,7 @@ return {
 				},
 			}
 			vim.lsp.config.emmet_ls = {
-				cmd = {"emmet-language-server"},
+				cmd = {"emmet-language-server", "--stdio"},
 				capabilities = capabilities,
 			}
 

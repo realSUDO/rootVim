@@ -11,20 +11,18 @@
   <img src="https://img.shields.io/badge/Linux-Hyprland%20%7C%20Arch-black?style=flat-square&logo=arch-linux" />
 </p>
 
+<p align="center">
+  <img src="./media/ui.png" alt="rootVim UI" width="800"/>
+</p>
+
+<p align="center">
+  <img src="./media/telescope.png" alt="Telescope Finder" width="400"/>
+  <img src="./media/zero.png" alt="Zero Screen" width="400"/>
+</p>
+
 ---
 
-## ⚡ Quickstart
-
-Get up & running instantly:
-
-```bash
-git clone https://github.com/realSUDO/rootVim ~/.config/nvim 
-nvim +Lazy sync
-```
-
-✨ That’s it. Restart Neovim and you’re inside **realSUDO/rootVim**.
-
-### 🔑 Quick Binds (Essentials)
+## 🔑 Quick Binds (Essentials)
 
 | Action                  | Keybind                |
 |--------------------------|------------------------|
@@ -40,6 +38,8 @@ nvim +Lazy sync
 | Terminal Vertical        | `<leader>ty`          |
 | Window Navigation        | `<C-h/j/k/l>`         |
 | Compile & Run            | `<leader><leader><leader>r` |
+| Toggle Copilot           | `:Copilot`            |
+| Theme Selector           | `:ThemeSelector`      |
 
 ---
 
@@ -163,6 +163,8 @@ nvim +Lazy sync
 - 📊 Lualine statusline
 - 🧠 Diagnostics + DAP ready
 - 🏠 ASCII start screen + sessions
+- 🤖 GitHub Copilot integration
+- 🎨 Live theme selector (by github.com/realSUDO)
 
 ---
 
@@ -194,5 +196,4 @@ nvim +Lazy sync
 
 MIT © realSUDO
 
-<p align="center"><i>“There is elegance in speed. There is beauty in silence.”</i></p>
-
+<p align="center"><i>"There is elegance in speed. There is beauty in silence."</i></p>

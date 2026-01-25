@@ -9,6 +9,10 @@ return {
 	{
 		"nvim-lua/plenary.nvim",
 	},
+	-- for snippets
+	{
+		"honza/vim-snippets",
+	},
 	{
 		"SirVer/ultisnips",
 		dependencies = {

@@ -42,8 +42,8 @@ function CompileAndRun()
 	end
 
 	local ft = vim.bo.filetype
-	local filename = vim.fn.expand("%:t")
 	local filename_without_ext = vim.fn.expand("%:t:r")
+	local file = vim.fn.expand("%:p")
 
 	-- C / C++
 	if ft == "c" or ft == "cpp" then
@@ -72,8 +72,21 @@ function CompileAndRun()
 
 	-- HTML
 	elseif ft == "html" then
-		vim.cmd("w")
-		vim.cmd("belowright 13split | terminal live-server %")
+		function Html ()
+			vim.cmd("w")
+			local current_tab = vim.fn.tabpagenr()
+			vim.cmd("tabnew | terminal live-server " .. file )
+			vim.cmd("file live-server")
+			vim.cmd("tabnext " .. current_tab)
+		end
+		if pcall(Html) then
+			print("Started Live-server in new tab")
+		else
+			local currentTime = os.date("%H:%M:%S")
+			vim.cmd("file ls" ..currentTime)
+			print("Server already running ! starting a new one")
+		end
+
 	end
 end
 
