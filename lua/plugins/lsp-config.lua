@@ -12,7 +12,7 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "clangd", "ts_ls", "pyright" },
+				ensure_installed = { "lua_ls", "clangd", "ts_ls", "pyright", "cssls", "emmet_ls" },
 			})
 		end,
 	},
@@ -65,9 +65,13 @@ return {
 				cmd = {"emmet-language-server", "--stdio"},
 				capabilities = capabilities,
 			}
+			vim.lsp.config.cssls = {
+				cmd = {"vscode-css-language-server", "--stdio"},
+				capabilities = capabilities,
+			}
 
 			-- Enable LSPs
-			vim.lsp.enable({ "lua_ls", "clangd", "ts_ls", "bashls", "pyright","emmet_ls" })
+			vim.lsp.enable({ "lua_ls", "clangd", "ts_ls", "bashls", "pyright","emmet_ls","cssls", })
 
 			-- 🗝️ Keymaps
 			vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
