@@ -1,14 +1,15 @@
 return {
-	"andweeb/presence.nvim", --loading presence.nvim for rich presence
+	"andweeb/presence.nvim",
 	config = function()
-		local lines = require("extras.rich-presence-lines") -- open rich_presence-lines in lines
+		local lines = require("extras.rich-presence-lines")
 
-		math.randomseed(vim.loop.hrtime()) --start the randomizer
-		local random_line = lines[math.random(#lines)] -- pick a random line in random_line
+		math.randomseed(vim.loop.hrtime())
+		local pair = lines.paired_texts[math.random(#lines.paired_texts)]
+		local random_editing = pair.editing[math.random(#pair.editing)]
 
 		require("presence").setup({
-			workspace_text = "Architecting Chaos",
-			editing_text = random_line,
+			workspace_text = pair.workspace,
+			editing_text = random_editing,
 			file_explorer_text = "Lost in the filesystem...",
 			git_commit_text = "Sealing the fate of this repo!",
 			plugin_manager_text = "Injecting steroids in Neovim...",

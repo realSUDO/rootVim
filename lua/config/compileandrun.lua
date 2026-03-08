@@ -58,7 +58,7 @@ function CompileAndRun()
 		end
 
 	-- JS / TS
-	elseif ft == "javascript" or ft == "typescript" then
+	elseif ft == "javascript" then
 		vim.cmd("belowright 13split | terminal node %")
 
 	-- Python
@@ -88,6 +88,11 @@ function CompileAndRun()
 			vim.cmd("file ls" ..currentTime)
 			print("Server already running ! starting a new one")
 		end
+	-- typescript
+	elseif ft == "typescript" then
+		local filename = vim.fn.expand("%:t")
+		local basename = vim.fn.expand("%:r") -- name without extension..
+		vim.cmd("belowright 13split | terminal tsc % && node " .. basename .. ".js ; rm " ..basename.. ".js");
 
 	end
 end
