@@ -3,6 +3,8 @@
 # Author: justmultiply
 # Cosmic Edition: Now with Premium Visual Flair ✨
 
+set -e  # Exit on error
+
 # Clear terminal only once at start
 clear
 
@@ -151,6 +153,26 @@ header "SYSTEM INSPECTION"
 [ "$(id -u)" -eq 0 ] && error "Root detected! Regular user privileges required."
 command -v python3 >/dev/null || error "Python3 missing. This ain't the stone age."
 
+# Detect OS and package manager
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    OS=$ID
+else
+    error "Cannot detect OS. Unsupported system."
+fi
+
+if command -v pacman >/dev/null 2>&1; then
+    PKG_MANAGER="pacman"
+    INSTALL_CMD="sudo pacman -S --noconfirm --needed"
+elif command -v apt >/dev/null 2>&1; then
+    PKG_MANAGER="apt"
+    INSTALL_CMD="sudo apt install -y"
+else
+    error "Unsupported package manager. Only pacman and apt are supported."
+fi
+
+success "Detected: $OS with $PKG_MANAGER package manager"
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 [ ! -f "$SCRIPT_DIR/init.lua" ] && warning "init.lua missing. Are we in the right directory?"
 
@@ -166,17 +188,25 @@ fi
 # ==== CORE DEPENDENCIES ====
 header "ESSENTIAL DEPENDENCIES"
 
-install_arch_pkg() {
+install_pkg() {
     local pkg="$1"
     local reason="$2"
     local critical="${3:-true}"
     
-    if pacman -Qi "$pkg" &>/dev/null; then
+    # Check if package is installed
+    local is_installed=false
+    if [ "$PKG_MANAGER" = "pacman" ]; then
+        pacman -Qi "$pkg" &>/dev/null && is_installed=true
+    elif [ "$PKG_MANAGER" = "apt" ]; then
+        dpkg -l | grep -q "^ii  $pkg " && is_installed=true
+    fi
+    
+    if $is_installed; then
         success "${pkg} already installed and ready 💪"
     else
         warning "${pkg} missing! Required for: ${reason}"
         if ask "Install ${pkg}?" "Y"; then
-            (sudo pacman -S --noconfirm --needed "$pkg" >/dev/null 2>&1) &
+            ($INSTALL_CMD "$pkg" >/dev/null 2>&1) &
             spinner "Installing ${pkg}"
             if [ $? -eq 0 ]; then
                 success "${pkg} successfully installed! 🎯"
@@ -196,11 +226,35 @@ install_arch_pkg() {
 }
 
 # Core packages with premium status
-install_arch_pkg "neovim" "The premium editor experience" true
-install_arch_pkg "python-pip" "Python package excellence" true
-install_arch_pkg "nodejs" "JavaScript runtime supremacy" true
-install_arch_pkg "npm" "Node package mastery" true
-install_arch_pkg "clang" "C/C++ toolchain" false
+install_pkg "neovim" "The premium editor experience" true
+
+if [ "$PKG_MANAGER" = "pacman" ]; then
+    install_pkg "python-pip" "Python package excellence" true
+    install_pkg "nodejs" "JavaScript runtime supremacy" true
+    install_pkg "npm" "Node package mastery" true
+    install_pkg "clang" "C/C++ toolchain" false
+    install_pkg "tree-sitter" "Syntax parsing engine" true
+    install_pkg "gcc" "Compiler for treesitter parsers" true
+    install_pkg "make" "Build tool for treesitter" true
+    install_pkg "unzip" "Mason LSP tool extraction" true
+    install_pkg "wget" "Mason LSP downloads" true
+    install_pkg "curl" "Mason LSP downloads" true
+    install_pkg "tar" "Mason LSP extraction" true
+    install_pkg "gzip" "Mason LSP compression" true
+elif [ "$PKG_MANAGER" = "apt" ]; then
+    install_pkg "python3-pip" "Python package excellence" true
+    install_pkg "nodejs" "JavaScript runtime supremacy" true
+    install_pkg "npm" "Node package mastery" true
+    install_pkg "clang" "C/C++ toolchain" false
+    install_pkg "libtree-sitter-dev" "Syntax parsing engine" true
+    install_pkg "gcc" "Compiler for treesitter parsers" true
+    install_pkg "make" "Build tool for treesitter" true
+    install_pkg "unzip" "Mason LSP tool extraction" true
+    install_pkg "wget" "Mason LSP downloads" true
+    install_pkg "curl" "Mason LSP downloads" true
+    install_pkg "tar" "Mason LSP extraction" true
+    install_pkg "gzip" "Mason LSP compression" true
+fi
 
 # ==== CLIPBOARD SUPPORT ====
 header "CLIPBOARD INTEGRATION"
@@ -210,12 +264,16 @@ WAYLAND=$(env | grep -q WAYLAND_DISPLAY && echo 1 || echo 0)
 X11=$(env | grep -q DISPLAY && echo 1 || echo 0)
 
 if [ "$WAYLAND" -eq 1 ]; then
-    install_arch_pkg "wl-clipboard" "$CLIPBOARD_NOTE (Wayland)" false
+    if [ "$PKG_MANAGER" = "pacman" ]; then
+        install_pkg "wl-clipboard" "$CLIPBOARD_NOTE (Wayland)" false
+    elif [ "$PKG_MANAGER" = "apt" ]; then
+        install_pkg "wl-clipboard" "$CLIPBOARD_NOTE (Wayland)" false
+    fi
 elif [ "$X11" -eq 1 ]; then
     if ! command -v xclip >/dev/null && ! command -v xsel >/dev/null; then
         warning "No clipboard tools detected"
         if ask "Install xclip for premium clipboard support?" "Y"; then
-            (sudo pacman -S --noconfirm xclip >/dev/null 2>&1) &
+            ($INSTALL_CMD xclip >/dev/null 2>&1) &
             spinner "Installing xclip"
             success "xclip ready for action! 📋"
         fi
@@ -309,7 +367,62 @@ install_optional_pkg() {
 }
 
 install_optional_pkg "stylua" "Lua code formatting" \
-    "sudo pacman -S --noconfirm stylua || cargo install stylua"
+    "$INSTALL_CMD stylua || cargo install stylua"
+
+# ==== NPM PACKAGES ====
+header "NPM PACKAGES"
+
+install_npm_pkg() {
+    local pkg="$1"
+    local reason="$2"
+    local critical="${3:-false}"
+    
+    if npm list -g "$pkg" &>/dev/null; then
+        success "${pkg} already installed 🌟"
+    else
+        warning "${pkg} needed for: ${reason}"
+        if ask "Install ${pkg} globally via npm?" "Y"; then
+            (sudo npm install -g "$pkg" >/dev/null 2>&1) &
+            spinner "Installing ${pkg}"
+            if npm list -g "$pkg" &>/dev/null; then
+                success "${pkg} installed successfully! 🎊"
+            else
+                if $critical; then
+                    error "${pkg} installation failed! Aborting. 🚨"
+                else
+                    warning "${pkg} installation failed. Continuing..."
+                fi
+            fi
+        elif $critical; then
+            error "Critical npm package skipped! Cannot continue! 💥"
+        else
+            warning "${pkg} skipped."
+        fi
+    fi
+}
+
+install_npm_pkg "typescript" "TypeScript compilation (tsc)" true
+install_npm_pkg "live-server" "HTML live development server" true
+
+# ==== PASSMASK PLUGIN ====
+header "PASSMASK PLUGIN (OPTIONAL)"
+
+PASSMASK_SRC="$HOME/CrazyProjects/passmask"
+PASSMASK_DEST="$HOME/.local/share/nvim/passmask"
+
+if [ -d "$PASSMASK_SRC" ]; then
+    warning "Passmask plugin found at $PASSMASK_SRC"
+    if ask "Install passmask plugin for password masking?" "N"; then
+        mkdir -p "$(dirname "$PASSMASK_DEST")"
+        (cp -r "$PASSMASK_SRC" "$PASSMASK_DEST" >/dev/null 2>&1) &
+        spinner "Installing passmask plugin"
+        success "Passmask plugin installed! 🔒"
+    else
+        warning "Passmask plugin skipped. Plugin will be disabled."
+    fi
+else
+    warning "Passmask plugin not found at $PASSMASK_SRC. Skipping."
+fi
 
 # ==== CONFIG DEPLOYMENT ====
 header "PREMIUM CONFIG DEPLOYMENT"
